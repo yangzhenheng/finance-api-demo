@@ -1,0 +1,97 @@
+{
+  "info": {
+    "name": "finance-api-demo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/"
+      }
+    },
+    {
+      "name": "Get Assets",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/api/assets"
+      }
+    },
+    {
+      "name": "Get Asset Detail",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/api/assets/show?id=1"
+      }
+    },
+    {
+      "name": "Create Asset",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"asset_code\": \"FUND002\",\n  \"asset_name\": \"Income Fund B\",\n  \"asset_type\": \"fund\",\n  \"risk_level\": \"medium\",\n  \"current_value\": 98000.0\n}"
+        },
+        "url": "{{base_url}}/api/assets"
+      }
+    },
+    {
+      "name": "Get Trades",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/api/trades"
+      }
+    },
+    {
+      "name": "Create Trade",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer_id\": 1,\n  \"asset_id\": 1,\n  \"trade_type\": \"buy\",\n  \"amount\": 10000.0,\n  \"trade_date\": \"2026-04-01\"\n}"
+        },
+        "url": "{{base_url}}/api/trades"
+      }
+    },
+    {
+      "name": "Customer Summary",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/api/reports/customer-summary?customer_id=1"
+      }
+    },
+    {
+      "name": "Asset Performance",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/api/reports/asset-performance"
+      }
+    },
+    {
+      "name": "Export CSV",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/api/reports/export-csv"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000"
+    }
+  ]
+}
