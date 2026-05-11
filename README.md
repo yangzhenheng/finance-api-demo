@@ -1,69 +1,73 @@
 # finance-api-demo
 
 > PHP RESTful API demo for financial data management and report generation.  
-> 一个面向金融数据处理与报表导出的 PHP 后端 API 示例项目。
+> 一个面向金融数据处理、交易记录管理和报表导出的 PHP 后端 API 示例项目。
 
-## 项目简介
+## Overview
 
-`finance-api-demo` 是一个使用 **PHP + MySQL + RESTful API** 开发的后端项目，用于模拟企业内部金融数据管理场景。项目围绕资产数据、客户交易记录、收益统计和 CSV 报表导出进行设计，重点展示后端开发中的接口设计、数据库建模、参数校验、统一响应、错误处理和接口文档能力。
+`finance-api-demo` 是一个基于 **PHP + MySQL + RESTful API** 的后端项目，用于模拟企业内部金融数据管理系统的基础服务能力。
 
-该项目适合作为初级后端开发工程师求职作品，尤其匹配以下岗位方向：
+项目围绕客户、资产、交易记录和报表统计进行设计，重点实现：
 
-- PHP 后端开发
-- RESTful API 开发
-- 金融数据处理
-- 后台管理系统接口
-- 报表统计与导出
-- GitHub 项目展示与接口文档编写
-
-## 技术栈
-
-| 类型 | 技术 |
-|---|---|
-| 后端语言 | PHP 8+ |
-| 数据库 | MySQL |
-| 数据库连接 | PDO |
-| 接口风格 | RESTful API |
-| 数据格式 | JSON |
-| 接口测试 | Postman |
-| 文档 | Markdown |
-| 版本管理 | Git / GitHub |
-
-## 核心功能
-
-### 资产管理
-
-- 新增资产数据
-- 查询资产列表
-- 按资产类型筛选
-- 按风险等级筛选
-- 查询资产详情
-
-### 交易记录
-
-- 新增客户交易记录
-- 查询交易流水
-- 按客户 ID 筛选
-- 按资产 ID 筛选
-- 按交易类型筛选
-
-### 报表统计
-
-- 客户资产汇总
+- 金融资产数据管理
+- 客户交易记录管理
+- 资产与交易数据查询
+- 客户持仓汇总
 - 资产交易表现统计
-- 买入 / 卖出金额汇总
 - CSV 报表导出
+- RESTful API 文档与 Postman 测试集合
 
-### 工程设计
+该项目主要展示后端开发中的 **接口设计、数据库建模、参数校验、统一响应、错误处理、SQL 查询与接口文档编写能力**。
 
-- 简易路由封装
-- PDO 数据库连接封装
-- 统一 JSON 响应结构
-- 基础参数校验
-- 基础错误处理
-- Postman 接口测试集合
+## Tech Stack
 
-## 项目结构
+| Category | Technology |
+|---|---|
+| Language | PHP 8+ |
+| Database | MySQL |
+| Database Access | PDO |
+| API Style | RESTful API |
+| Response Format | JSON |
+| API Testing | Postman |
+| Documentation | Markdown |
+| Version Control | Git / GitHub |
+
+## Features
+
+### Asset Management
+
+- Create asset records
+- Query asset list
+- Filter assets by type
+- Filter assets by risk level
+- Query asset detail
+
+### Trade Management
+
+- Create trade records
+- Query trade list
+- Filter trades by customer
+- Filter trades by asset
+- Filter trades by trade type
+
+### Report APIs
+
+- Customer summary report
+- Asset performance report
+- CSV report export
+
+### Engineering Design
+
+- Simple router implementation
+- PDO database connection wrapper
+- Controller-based project structure
+- Unified JSON response format
+- Basic request validation
+- Basic exception and error response handling
+- SQL schema and seed data
+- Postman collection for API testing
+
+## Project Structure
 
 ```text
 finance-api-demo
@@ -82,7 +86,10 @@ finance-api-demo
 │   ├── schema.sql
 │   └── seed.sql
 ├── docs
-│   └── API.md
+│   ├── API.md
+│   ├── DATABASE.md
+│   ├── TESTING.md
+│   └── PROJECT_DESIGN.md
 ├── postman
 │   └── finance-api-demo.postman_collection.json
 ├── .env.example
@@ -91,41 +98,41 @@ finance-api-demo
 └── README.md
 ```
 
-## 快速启动
+## Quick Start
 
-### 1. 克隆项目
+### 1. Clone Repository
 
 ```bash
 git clone https://github.com/yangzhenheng/finance-api-demo.git
 cd finance-api-demo
 ```
 
-### 2. 安装依赖
+### 2. Install Dependencies
 
 ```bash
 composer install
 ```
 
-### 3. 创建数据库
+### 3. Create Database
 
 ```sql
 CREATE DATABASE finance_api_demo DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-### 4. 导入表结构和测试数据
+### 4. Import SQL Files
 
 ```bash
 mysql -u root -p finance_api_demo < database/schema.sql
 mysql -u root -p finance_api_demo < database/seed.sql
 ```
 
-### 5. 配置环境变量
+### 5. Configure Environment
 
 ```bash
 cp .env.example .env
 ```
 
-根据本地 MySQL 修改 `.env`：
+Update `.env`:
 
 ```env
 DB_HOST=127.0.0.1
@@ -135,27 +142,33 @@ DB_USERNAME=root
 DB_PASSWORD=your_password
 ```
 
-### 6. 启动项目
+### 6. Start Development Server
 
 ```bash
 php -S 127.0.0.1:8000 -t public
 ```
 
-浏览器访问：
+Visit:
 
 ```text
 http://127.0.0.1:8000
 ```
 
-## 接口示例
+## API Examples
 
-### 查询资产列表
+### Health Check
+
+```http
+GET /
+```
+
+### Get Asset List
 
 ```http
 GET /api/assets
 ```
 
-### 新增资产
+### Create Asset
 
 ```http
 POST /api/assets
@@ -170,80 +183,110 @@ Content-Type: application/json
 }
 ```
 
-### 查询交易记录
+### Get Trade List
 
 ```http
 GET /api/trades
 ```
 
-### 查询客户汇总报表
+### Create Trade
+
+```http
+POST /api/trades
+Content-Type: application/json
+
+{
+  "customer_id": 1,
+  "asset_id": 1,
+  "trade_type": "buy",
+  "amount": 10000.00,
+  "trade_date": "2026-04-01"
+}
+```
+
+### Customer Summary Report
 
 ```http
 GET /api/reports/customer-summary?customer_id=1
 ```
 
-### 导出 CSV 报表
+### Asset Performance Report
+
+```http
+GET /api/reports/asset-performance
+```
+
+### Export CSV Report
 
 ```http
 GET /api/reports/export-csv
 ```
 
-完整接口文档见：
+## Documentation
 
-```text
-docs/API.md
-```
-
-## 数据库设计
-
-项目包含 3 张核心表：
-
-| 表名 | 说明 |
+| File | Description |
 |---|---|
-| customers | 客户信息表 |
-| assets | 金融资产表 |
-| trades | 交易记录表 |
+| [docs/API.md](docs/API.md) | API documentation |
+| [docs/DATABASE.md](docs/DATABASE.md) | Database schema and table relationship |
+| [docs/TESTING.md](docs/TESTING.md) | Postman testing guide |
+| [docs/PROJECT_DESIGN.md](docs/PROJECT_DESIGN.md) | Project design and technical explanation |
 
-核心关系：
+## Database Design
 
-- 一个客户可以有多条交易记录
-- 一个资产可以关联多条交易记录
-- 交易记录通过 `customer_id` 和 `asset_id` 关联客户与资产
+The project includes three main tables:
 
-## Postman 测试
+| Table | Description |
+|---|---|
+| customers | Customer profile table |
+| assets | Financial asset table |
+| trades | Trade record table |
 
-Postman 集合文件：
+Relationship:
+
+- One customer can have multiple trade records.
+- One asset can be linked to multiple trade records.
+- The `trades` table connects customers and assets through `customer_id` and `asset_id`.
+
+See details in [docs/DATABASE.md](docs/DATABASE.md).
+
+## Postman
+
+Postman collection:
 
 ```text
 postman/finance-api-demo.postman_collection.json
 ```
 
-导入 Postman 后，将环境变量设置为：
+Set environment variable:
 
 ```text
 base_url = http://127.0.0.1:8000
 ```
 
-即可测试资产、交易和报表相关接口。
+Then run API requests in Postman.
 
-## 项目亮点
+## Highlights
 
-- 使用 PHP 原生方式实现后端 API，便于展示基础功底
-- 使用 PDO 操作 MySQL，避免直接拼接 SQL
-- 通过 Controller / Core 分层组织代码，结构清晰
-- README、API 文档、SQL 文件和 Postman 集合完整
-- 项目场景与金融数据处理、报表导出、企业内部 API 开发岗位匹配
+- Clear RESTful API structure
+- Basic MVC-style organization with Controller and Core modules
+- PDO-based database access
+- MySQL schema with foreign key relationships
+- Unified JSON response format
+- API documentation and Postman collection included
+- CSV export endpoint for report generation
+- Suitable for demonstrating backend fundamentals in PHP API development
 
-## 后续优化计划
+## Future Improvements
 
-- 增加 Token 鉴权
-- 增加分页与排序
-- 增加接口访问日志
-- 增加 Docker 部署文件
-- 增加 PHPUnit 单元测试
-- 增加后台管理前端页面
+- Add Token-based authentication
+- Add pagination and sorting
+- Add request logging
+- Add Docker deployment
+- Add PHPUnit tests
+- Add frontend admin dashboard
+- Add role-based access control
 
-## 作者
+## Author
 
 **Henny / 杨振恒**
 

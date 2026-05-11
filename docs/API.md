@@ -1,14 +1,14 @@
-# finance-api-demo API 文档
+# API Documentation
 
-基础地址：
+Base URL:
 
 ```text
 http://127.0.0.1:8000
 ```
 
-## 统一响应格式
+## Response Format
 
-### 成功响应
+### Success Response
 
 ```json
 {
@@ -18,7 +18,7 @@ http://127.0.0.1:8000
 }
 ```
 
-### 失败响应
+### Error Response
 
 ```json
 {
@@ -28,15 +28,15 @@ http://127.0.0.1:8000
 }
 ```
 
-## 1. 系统状态
+## 1. Health Check
 
-### 1.1 健康检查
+### Request
 
 ```http
 GET /
 ```
 
-响应示例：
+### Response Example
 
 ```json
 {
@@ -50,53 +50,59 @@ GET /
 }
 ```
 
-## 2. 资产接口
+## 2. Asset APIs
 
-### 2.1 查询资产列表
+### 2.1 Get Asset List
 
 ```http
 GET /api/assets
 ```
 
-可选查询参数：
+Optional query parameters:
 
-| 参数 | 类型 | 必填 | 说明 |
+| Parameter | Type | Required | Description |
 |---|---|---|---|
-| asset_type | string | 否 | 资产类型，例如 fund、stock、bond、etf |
-| risk_level | string | 否 | 风险等级，例如 low、medium、high |
+| asset_type | string | No | Asset type, such as fund, stock, bond, etf |
+| risk_level | string | No | Risk level, such as low, medium, high |
 
-请求示例：
+Request example:
 
 ```http
 GET /api/assets?asset_type=fund&risk_level=medium
 ```
 
-响应字段说明：
+Response data fields:
 
-| 字段 | 说明 |
+| Field | Description |
 |---|---|
-| id | 资产 ID |
-| asset_code | 资产编码 |
-| asset_name | 资产名称 |
-| asset_type | 资产类型 |
-| risk_level | 风险等级 |
-| current_value | 当前资产价值 |
-| created_at | 创建时间 |
+| id | Asset ID |
+| asset_code | Asset code |
+| asset_name | Asset name |
+| asset_type | Asset type |
+| risk_level | Risk level |
+| current_value | Current value |
+| created_at | Created time |
 
-### 2.2 查询资产详情
+### 2.2 Get Asset Detail
 
 ```http
 GET /api/assets/show?id=1
 ```
 
-### 2.3 新增资产
+Query parameters:
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| id | int | Yes | Asset ID |
+
+### 2.3 Create Asset
 
 ```http
 POST /api/assets
 Content-Type: application/json
 ```
 
-请求体：
+Request body:
 
 ```json
 {
@@ -108,7 +114,17 @@ Content-Type: application/json
 }
 ```
 
-成功响应：
+Request fields:
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| asset_code | string | Yes | Asset code |
+| asset_name | string | Yes | Asset name |
+| asset_type | string | Yes | Asset type |
+| risk_level | string | Yes | Risk level |
+| current_value | decimal | Yes | Current value |
+
+Response example:
 
 ```json
 {
@@ -120,36 +136,49 @@ Content-Type: application/json
 }
 ```
 
-## 3. 交易接口
+## 3. Trade APIs
 
-### 3.1 查询交易记录
+### 3.1 Get Trade List
 
 ```http
 GET /api/trades
 ```
 
-可选查询参数：
+Optional query parameters:
 
-| 参数 | 类型 | 必填 | 说明 |
+| Parameter | Type | Required | Description |
 |---|---|---|---|
-| customer_id | int | 否 | 客户 ID |
-| asset_id | int | 否 | 资产 ID |
-| trade_type | string | 否 | 交易类型：buy / sell |
+| customer_id | int | No | Customer ID |
+| asset_id | int | No | Asset ID |
+| trade_type | string | No | buy or sell |
 
-请求示例：
+Request example:
 
 ```http
 GET /api/trades?customer_id=1&trade_type=buy
 ```
 
-### 3.2 新增交易记录
+Response data fields:
+
+| Field | Description |
+|---|---|
+| id | Trade ID |
+| customer_name | Customer name |
+| asset_code | Asset code |
+| asset_name | Asset name |
+| trade_type | Trade type |
+| amount | Trade amount |
+| trade_date | Trade date |
+| created_at | Created time |
+
+### 3.2 Create Trade
 
 ```http
 POST /api/trades
 Content-Type: application/json
 ```
 
-请求体：
+Request body:
 
 ```json
 {
@@ -161,75 +190,105 @@ Content-Type: application/json
 }
 ```
 
-## 4. 报表接口
+Request fields:
 
-### 4.1 客户持仓汇总
+| Field | Type | Required | Description |
+|---|---|---|---|
+| customer_id | int | Yes | Customer ID |
+| asset_id | int | Yes | Asset ID |
+| trade_type | string | Yes | buy or sell |
+| amount | decimal | Yes | Trade amount |
+| trade_date | date | Yes | Trade date |
+
+Response example:
+
+```json
+{
+  "success": true,
+  "message": "Trade created",
+  "data": {
+    "id": 8
+  }
+}
+```
+
+## 4. Report APIs
+
+### 4.1 Customer Summary
 
 ```http
 GET /api/reports/customer-summary?customer_id=1
 ```
 
-功能说明：
+Query parameters:
 
-- 查询指定客户基础信息
-- 按资产类型聚合交易记录
-- 统计交易次数和净交易金额
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| customer_id | int | Yes | Customer ID |
 
-### 4.2 资产表现统计
+This endpoint returns:
+
+- Customer basic information
+- Trade count grouped by asset type
+- Net trade amount grouped by asset type
+
+### 4.2 Asset Performance
 
 ```http
 GET /api/reports/asset-performance
 ```
 
-功能说明：
+This endpoint returns:
 
-- 查询所有资产
-- 汇总每个资产的买入金额
-- 汇总每个资产的卖出金额
-- 计算净交易金额
+- Asset basic information
+- Total buy amount
+- Total sell amount
+- Net trade amount
 
-### 4.3 导出 CSV 报表
+### 4.3 Export CSV
 
 ```http
 GET /api/reports/export-csv
 ```
 
-CSV 字段：
+This endpoint exports trade records as a CSV file.
 
-| 字段 | 说明 |
+CSV fields:
+
+| Field | Description |
 |---|---|
-| customer_name | 客户名称 |
-| asset_code | 资产编码 |
-| asset_name | 资产名称 |
-| trade_type | 交易类型 |
-| amount | 交易金额 |
-| trade_date | 交易日期 |
+| customer_name | Customer name |
+| asset_code | Asset code |
+| asset_name | Asset name |
+| trade_type | Trade type |
+| amount | Trade amount |
+| trade_date | Trade date |
 
-## 5. 错误码说明
+## 5. HTTP Status Codes
 
-| HTTP 状态码 | 说明 |
+| Status Code | Description |
 |---|---|
-| 200 | 请求成功 |
-| 201 | 创建成功 |
-| 400 | 参数错误 |
-| 404 | 资源不存在 |
-| 500 | 服务器错误 |
+| 200 | OK |
+| 201 | Created |
+| 400 | Bad Request |
+| 404 | Not Found |
+| 500 | Internal Server Error |
 
-## 6. Postman 测试
+## 6. Postman Testing
 
-Postman 集合路径：
+Postman collection:
 
 ```text
 postman/finance-api-demo.postman_collection.json
 ```
 
-导入后设置变量：
+Environment variable:
 
 ```text
 base_url = http://127.0.0.1:8000
 ```
 
-然后依次测试：
+Suggested test order:
 
 1. Health Check
 2. Get Assets
